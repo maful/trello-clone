@@ -1,8 +1,7 @@
 <template>
-  <draggable v-model="lists" group="lists" class="row drag-area" @end="listMoved">
-    <div v-for="(list, index) in lists" class="col-3">
+  <draggable v-model="lists" group="lists" class="board drag-area" @end="listMoved">
+    <div v-for="(list, index) in lists" class="list">
       <h6>{{ list.name }}</h6>
-      <hr />
 
       <draggable v-model="list.cards" group="cards" class="drag-area" @change="cardMoved">
         <div v-for="(card, index) in list.cards" class="card card-body mb-3">
@@ -10,10 +9,8 @@
         </div>
       </draggable>
 
-      <div class="card card-body">
-        <textarea v-model="messages[list.id]" class="form-control"></textarea>
-        <button v-on:click="submitMessages(list.id)" class="btn btn-secondary">Add</button>
-      </div>
+      <textarea v-model="messages[list.id]" class="form-control mb-1"></textarea>
+      <button v-on:click="submitMessages(list.id)" class="btn btn-secondary">Add</button>
     </div>
   </draggable>
 </template>
@@ -88,5 +85,20 @@ export default {
 <style scoped>
 .drag-area {
   min-height: 10px;
+}
+
+.board {
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.list {
+  background-color: #E2E4E6;
+  border-radius: 3px;
+  display: inline-block;
+  margin-right: 20px;
+  padding: 10px;
+  vertical-align: top;
+  width: 270px;
 }
 </style>
