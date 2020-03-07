@@ -15,12 +15,33 @@ import 'bootstrap'
 import 'data-confirm-modal'
 
 import Vue from 'vue/dist/vue.esm'
+import Vuex from 'vuex'
 import App from '../app.vue'
 import TurbolinksAdapter from 'vue-turbolinks'
 
+Vue.use(Vuex)
 Vue.use(TurbolinksAdapter)
 
-window.store = {}
+window.store = new Vuex.Store({
+  state: {
+    lists: []
+  },
+
+  mutations: {
+    addList(state, data) {
+      state.lists.push(data)
+    },
+    addCard(state, data) {
+      const index = state.lists.findIndex(item => item.id == data.list_id)
+      state.lists[index].cards.push(data)
+    },
+    editCard(state, data) {
+      const list_index = state.lists.findIndex((item) => item.id === data.list_id)
+      const card_index = state.lists[list_index].cards.findIndex((item) => item.id === data.id)
+      state.lists[list_index].cards.splice(parseInt(card_index), 1, data)
+    },
+  }
+})
 
 $(document).on("turbolinks:load", () => {
   $('[data-toggle="tooltip"]').tooltip()
@@ -28,12 +49,12 @@ $(document).on("turbolinks:load", () => {
 
   let element = document.querySelector("#boards")
   if (element != undefined) {
-    window.store.lists = JSON.parse(element.dataset.lists)
+    window.store.state.lists = JSON.parse(element.dataset.lists)
 
     const app = new Vue({
       el: element,
-      data: window.store,
-      template: "<App :original_lists='lists' />",
+      store: window.store,
+      template: "<App />",
       components: { App }
     })
   }
