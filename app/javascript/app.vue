@@ -59,7 +59,6 @@ export default {
         data: data,
         dataType: "json",
         success: data => {
-          window.store.lists.push(data)
           this.message = ""
           this.editing = false
         }
