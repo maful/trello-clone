@@ -1,12 +1,12 @@
 <template>
-  <draggable v-model="lists" group="lists" class="board drag-area" @end="listMoved" draggable=".list-moved">
+  <draggable v-model="lists" group="lists" class="board drag-area pb-3" @end="listMoved" draggable=".list-moved">
     <list v-for="(list, index) in lists" v-bind:key="list.id" :list="list" class="list-moved"></list>
 
-    <div slot="footer" class="list">
-      <a v-if="!editing" v-on:click="startEditing">Add a List</a>
-      <textarea v-if="editing" ref="message" v-model="message" class="form-control mb-1"></textarea>
-      <button v-if="editing" v-on:click="createList" class="btn btn-secondary">Add</button>
-      <a v-if="editing" v-on:click="editing=false">Cancel</a>
+    <div slot="footer" class="list add-list">
+      <a v-if="!editing" v-on:click="startEditing"><i class="fas fa-plus"></i> Add another List</a>
+      <textarea v-if="editing" ref="message" v-model="message" class="form-control mb-2" placeholder="Enter list title..."></textarea>
+      <button v-if="editing" v-on:click="createList" class="btn btn-sm btn-success">Add List</button>
+      <a v-if="editing" v-on:click="closeFormList" class="ml-2"><i class="fas fa-times fa-lg"></i></a>
     </div>
   </draggable>
 </template>
@@ -38,6 +38,10 @@ export default {
       this.editing = true
       this.$nextTick(() => { this.$refs.message.focus() })
     },
+    closeFormList: function() {
+      this.editing = false
+      this.message = ""
+    },
     listMoved: function (event) {
       let data = new FormData
       data.append("list[position]", event.newIndex + 1)
@@ -68,7 +72,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .drag-area {
   min-height: 10px;
 }
@@ -86,5 +90,15 @@ export default {
   padding: 10px;
   vertical-align: top;
   width: 270px;
+}
+
+.add-list {
+  a {
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: #CACCCE;
+  }
 }
 </style>

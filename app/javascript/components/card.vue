@@ -56,5 +56,7 @@
 </script>
 
 <style scoped>
-
+.card {
+  cursor: pointer;
+}
 </style>

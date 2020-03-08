@@ -1,15 +1,19 @@
 <template>
   <div class="list">
-    <h6>{{ list.name }}</h6>
+    <div class="mb-3 list-title">
+      <h6>{{ list.name }}</h6>
+    </div>
 
     <draggable v-model="list.cards" group="cards" class="drag-area" @change="cardMoved">
       <card v-for="card in list.cards" v-bind:key="card.id" :card="card" :list="list"></card>
     </draggable>
 
-    <a v-if="!editing" v-on:click="startEditing">Add a card</a>
-    <textarea v-if="editing" ref="message" v-model="message" class="form-control mb-1"></textarea>
-    <button v-if="editing" v-on:click="createCard" class="btn btn-secondary">Add</button>
-    <a v-if="editing" v-on:click="editing=false">Cancel</a>
+    <div class="form-card">
+      <a v-if="!editing" v-on:click="startEditing"><i class="fas fa-plus"></i> Add a card</a>
+      <textarea v-if="editing" ref="message" v-model="message" class="form-control mb-2" placeholder="Enter a litter card..."></textarea>
+      <button v-if="editing" v-on:click="createCard" class="btn btn-sm btn-success">Add Card</button>
+      <a v-if="editing" v-on:click="closeFormCard" class="ml-2"><i class="fas fa-times fa-lg"></i></a>
+    </div>
   </div>
 </template>
 
@@ -30,6 +34,10 @@ export default {
     startEditing: function () {
       this.editing = true
       this.$nextTick(() => { this.$refs.message.focus() })
+    },
+    closeFormCard: function() {
+      this.editing = false
+      this.message = ""
     },
     cardMoved: function (event) {
       const evt = event.added || event.moved
@@ -73,8 +81,34 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .drag-area {
   min-height: 10px;
+}
+
+.list-title {
+  cursor: pointer;
+}
+
+.form-card {
+  border-radius: 3px;
+  padding: 4px 8px;
+  color: #5e6c84;
+
+  i {
+    color: #6b778c;
+    &:hover {
+      color: #172b4d;
+    }
+  }
+
+  &:hover {
+    background-color: rgba(9,30,66,.08);
+    color: #172b4d;
+  }
+
+  a {
+    cursor: pointer;
+  }
 }
 </style>
