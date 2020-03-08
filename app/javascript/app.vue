@@ -1,8 +1,8 @@
 <template>
-  <draggable v-model="lists" group="lists" class="board drag-area" @end="listMoved">
-    <list v-for="(list, index) in lists" v-bind:key="list.id" :list="list"></list>
+  <draggable v-model="lists" group="lists" class="board drag-area" @end="listMoved" draggable=".list-moved">
+    <list v-for="(list, index) in lists" v-bind:key="list.id" :list="list" class="list-moved"></list>
 
-    <div class="list">
+    <div slot="footer" class="list">
       <a v-if="!editing" v-on:click="startEditing">Add a List</a>
       <textarea v-if="editing" ref="message" v-model="message" class="form-control mb-1"></textarea>
       <button v-if="editing" v-on:click="createList" class="btn btn-secondary">Add</button>
