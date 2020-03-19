@@ -19,7 +19,7 @@
 
 <script>
 import draggable from 'vuedraggable'
-import card from 'components/card'
+import card from './card'
 
 export default {
   props: ["list"],
